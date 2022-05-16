@@ -17,6 +17,17 @@ class _ExerciseOneState extends State<ExerciseOne> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
+  // List<DropdownMenuItem<String>> get dropdownItems{
+  //   List<DropdownMenuItem<String>> menuItems = [
+  //     DropdownMenuItem(child: Text("+974"),value: "+974"),
+  //     DropdownMenuItem(child: Text("Canada"),value: "Canada"),
+  //     DropdownMenuItem(child: Text("Brazil"),value: "Brazil"),
+  //     DropdownMenuItem(child: Text("England"),value: "England"),
+  //   ];
+  //   return menuItems;
+  // }
+  List<String>items=['+974','+880'];
+  String ? selectedValue = "+974";
   bool switch_bool = false;
   bool abc = false;
   bool _switchvalue = false;
@@ -34,7 +45,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
             Container(
               height: 191,
               width: double.infinity,
-              color: Colors.grey.shade100,
+              color: Colors.grey.shade200,
               child: Center(child: SvgPicture.asset("assets/Artboard.svg")),
             ),
             SizedBox(
@@ -78,24 +89,39 @@ class _ExerciseOneState extends State<ExerciseOne> {
             ),
 
             _switchvalue == false
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: Form(
-                      autovalidateMode: AutovalidateMode.always,
-                      child: TextFormField(
-                        controller: _emailController,
-                        validator: (value) => validateEmail(value),
-                        decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          hintText: 'Customer@login.com',
-                          hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                          icon: Icon(Icons.alternate_email_rounded),
-                          // prefix: SvgPicture.asset("assets/atthe.svg"),
-                          // suffix: SvgPicture.asset("assets/ok.svg")
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    Padding(
+                        padding:  EdgeInsets.only(left: 20, right: 20),
+                        child: Container(
+                          width: 450,
+                          child: Form(
+                            autovalidateMode: AutovalidateMode.always,
+                            child: TextFormField(
+                              controller: _emailController,
+                              validator: (value) => validateEmail(value),
+                              decoration: InputDecoration(
+                                border: UnderlineInputBorder(),
+                                hintText: 'Customer@login.com',
+                                hintStyle: TextStyle(fontWeight: FontWeight.bold),
+                                icon: Icon(Icons.alternate_email_rounded),
+                                // prefix: SvgPicture.asset("assets/atthe.svg"),
+                                // suffix: SvgPicture.asset("assets/ok.svg"),
+                                  suffixIcon: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SvgPicture.asset("assets/ok.svg",
+                                      height:2,
+                                    ),
+                                  )
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  )
+                  ],
+                )
                 :
                 // Container(
                 //   width: 70,
@@ -108,50 +134,92 @@ class _ExerciseOneState extends State<ExerciseOne> {
                 //   ),
                 // )
 
-                Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
-                    child: IntlPhoneField(
-                      controller: _phoneController,
-                      decoration: InputDecoration(
-                        hintText: 'XXXXXXXXXXX',
-                        icon: Icon(Icons.local_phone_rounded),
-                      ),
-                      onChanged: (phone) {
-                        print(phone.completeNumber);
-                      },
-                    ),
-                  ),
 
-            // Container(
-            //   width: 70,
-            //   child: const TextField (
-            //     decoration: InputDecoration(
-            //         border: OutlineInputBorder(),
-            //         labelText: 'Password',
-            //         hintText: 'Enter Your Password'
-            //     ),
-            //   ),
-            // ),
+
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: SvgPicture.asset("assets/phone.svg"),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 3, right: 12),
+                        child: DropdownButton<String>(
+                          value: selectedValue,
+                          items: items.map((item) =>DropdownMenuItem(
+                            value: item,
+                              child: Text(item,style: TextStyle(),))).toList(),
+                          itemHeight: null,
+                          iconSize: 30,
+                          menuMaxHeight: 20,
+                          // iconSize: 20,
+                          style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                          onChanged: (String? value) {
+                            value=value;
+
+                          },
+
+                        ),
+                      ),
+                    Container(
+                      width: 300,
+                      child: TextField (
+
+                        decoration: InputDecoration(
+                            labelText: 'XXXXXXXXXXXXX',
+                          labelStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SvgPicture.asset("assets/ok.svg",
+                            height:3,
+                              width: 3,
+                            ),
+                          )
+                        ),
+                      ),
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: SvgPicture.asset("assets/ok.svg"),
+                    // ),
+                  ],
+                ),
+
+
 
             SizedBox(
               height: 8,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 15, right: 20),
+
               child: TextFormField(
+
+
                 controller: _passwordController,
                 obscureText: true,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(),
-                  hintText: '***************************',
-                  hintStyle: TextStyle(),
-                  icon: Icon(Icons.lock_outline),
-                  // prefix: SvgPicture.asset("assets/lock.svg")
+                  hintText: '**********************',
+                  icon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset("assets/lock.svg"),
+                  ),
+                    suffixIcon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgPicture.asset("assets/password.svg",
+                        height:5,
+                        width: 5,
+                      ),
+                    )
                 ),
               ),
             ),
             SizedBox(
-              height: 8,
+              height: 16,
             ),
 
             Row(
@@ -160,7 +228,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
                 Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
                     child: Text("Forgot password?",
-                        style: TextStyle(color: Colors.orangeAccent)))
+                        style: TextStyle(color: Colors.orangeAccent,fontSize: 18)))
               ],
             ),
             SizedBox(
@@ -182,16 +250,17 @@ class _ExerciseOneState extends State<ExerciseOne> {
                 ),
                 child: Center(
                   child: Text(
-                    'login',
+                    'Log in',
                     style: new TextStyle(
                       fontSize: 18.0,
+                      fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
               ),
             ),
             SizedBox(
-              height: 8,
+              height: 16,
             ),
 
             Row(children: <Widget>[
@@ -212,7 +281,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
             ]),
 
             SizedBox(
-              height: 8,
+              height: 16,
             ),
 
             InkWell(
@@ -240,11 +309,33 @@ class _ExerciseOneState extends State<ExerciseOne> {
                           SizedBox(
                             width: 17,
                           ),
-                          Text(
-                            'Continue with google',
-                            style: new TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
+
+                          RichText(
+                              text: TextSpan(
+                                text: "Continue with",
+                                  style: TextStyle(fontSize: 16,)
+                              ),
+
                           ),
+                          SizedBox(width: 5,),
+                          RichText(
+                              text: TextSpan(
+                                text: "Google",
+                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)
+                              ),
+
+                          ),
+                          // RichText(
+                          //   text: TextSpan(
+                          //       text: "Continue with"
+                          //   ),
+                          //
+                          // ),
+                          // Text(
+                          //   'Continue with google',
+                          //   style: new TextStyle(
+                          //       fontSize: 18.0, fontWeight: FontWeight.bold),
+                          // ),
                         ],
                       ),
                       Padding(
@@ -284,11 +375,26 @@ class _ExerciseOneState extends State<ExerciseOne> {
                           SizedBox(
                             width: 17,
                           ),
-                          Text(
-                            'Continue with Apple',
-                            style: new TextStyle(
-                                fontSize: 18.0, fontWeight: FontWeight.bold),
+                          RichText(
+                            text: TextSpan(
+                                text: "Continue with",
+                                style: TextStyle(fontSize: 16,)
+                            ),
+
                           ),
+                          SizedBox(width: 5,),
+                          RichText(
+                            text: TextSpan(
+                                text: "Apple",
+                                style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)
+                            ),
+
+                          ),
+                          // Text(
+                          //   'Continue with Apple',
+                          //   style: new TextStyle(
+                          //       fontSize: 18.0, fontWeight: FontWeight.bold),
+                          // ),
                         ],
                       ),
                       Padding(
@@ -306,13 +412,38 @@ class _ExerciseOneState extends State<ExerciseOne> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account?"),
+                Text("Don't have an account?",
+                    style: TextStyle(fontSize: 14,)
+                ),
                 Text(
                   "Register",
                   style: TextStyle(color: Colors.orangeAccent),
                 )
               ],
-            )
+            ),
+            SizedBox(height: 36,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RichText(
+                  text: TextSpan(
+                      text: "Want to Become a",
+                      style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)
+                  ),
+
+                ),
+                SizedBox(width: 5,),
+                RichText(
+                  text: TextSpan(
+                      text: "Driver?",
+                      style: TextStyle(fontSize: 16,color: Colors.orangeAccent)
+                  ),
+
+                ),
+              ],
+            ),
+
           ],
         ),
       ),
@@ -327,7 +458,7 @@ String validateEmail(String? value) {
       r"{0,253}[a-zA-Z0-9])?)*$";
   RegExp regex = RegExp(pattern);
   if (value == null || value.isEmpty || !regex.hasMatch(value))
-    return 'Enter a valid email address';
+    return '';
   else
     return "match";
 }
