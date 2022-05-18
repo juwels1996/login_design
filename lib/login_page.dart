@@ -31,6 +31,36 @@ class _ExerciseOneState extends State<ExerciseOne> {
   bool switch_bool = false;
   bool abc = false;
   bool _switchvalue = false;
+  final _formKey = GlobalKey<FormState>();
+  String text = '';
+  int num = 0;
+  int textLength = 0;
+
+  String aaaa = "";
+
+  bool _secure = false;
+  bool isEmailValid =  false;
+  bool isPhone=false;
+
+
+
+    // String validateEmail(String? value, Icon) {
+    //   String pattern =
+    //       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+    //       r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+    //       r"{0,253}[a-zA-Z0-9])?)*$";
+    //   RegExp regex = RegExp(pattern);
+    //   if (value == null || value.isEmpty || !regex.hasMatch(value))
+    //     return Icon(Icons.arrow_forward);
+    //   else
+    //     return "match";
+    // }
+
+
+
+
+
+
   @override
   void initState() {
     super.initState();
@@ -98,25 +128,50 @@ class _ExerciseOneState extends State<ExerciseOne> {
                         child: Container(
                           width: 450,
                           child: Form(
+                            key: _formKey,
                             autovalidateMode: AutovalidateMode.always,
+                            // autovalidateMode: AutovalidateMode.always,
                             child: TextFormField(
+                              keyboardType: TextInputType.text,
                               controller: _emailController,
-                              validator: (value) => validateEmail(value),
-                              decoration: InputDecoration(
+                              validator: (value) {
+
+                                  value = _emailController.text;
+
+                                if(value.isNotEmpty) {
+                                   if(value.length > 7 && value.contains('@')) {
+                                     isEmailValid = true;
+                                     return null;
+                                   }
+                                   isEmailValid = false;
+                                   return 'Input a valid email';
+                                }
+                              },
+                              decoration:  InputDecoration(
                                 border: UnderlineInputBorder(),
                                 hintText: 'Customer@login.com',
                                 hintStyle: TextStyle(fontWeight: FontWeight.bold),
                                 icon: Icon(Icons.alternate_email_rounded),
+
+
                                 // prefix: SvgPicture.asset("assets/atthe.svg"),
                                 // suffix: SvgPicture.asset("assets/ok.svg"),
                                   suffixIcon: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: SvgPicture.asset("assets/ok.svg",
+                                    child: isEmailValid==true ? SvgPicture.asset("assets/ok.svg",
                                       height:2,
-                                    ),
-                                  )
+                                    ) : null,
+                                  ),
+
+
                               ),
+                              onChanged: (value){
+                                setState((){
+                                  textLength = text.length;
+                                });
+                              },
                             ),
+
                           ),
                         ),
                       ),
@@ -146,10 +201,13 @@ class _ExerciseOneState extends State<ExerciseOne> {
                     Padding(
                         padding: const EdgeInsets.only(left: 3, right: 12),
                         child: DropdownButton<String>(
+                          
                           value: selectedValue,
                           items: items.map((item) =>DropdownMenuItem(
                             value: item,
-                              child: Text(item,style: TextStyle(),))).toList(),
+                              child: Text(item,style: TextStyle(),)
+                          )
+                          ).toList(),
                           itemHeight: null,
                           iconSize: 30,
                           menuMaxHeight: 20,
@@ -164,20 +222,46 @@ class _ExerciseOneState extends State<ExerciseOne> {
                       ),
                     Container(
                       width: 300,
-                      child: TextField (
+                      child: TextFormField (
+                        validator: (juwel) {
+
+
+                          juwel = _phoneController.text;
+
+                          if(juwel.isNotEmpty) {
+                            if(juwel.length > 10 ) {
+                              isPhone = true;
+                              return null;
+                            }
+                            isPhone = false;
+                            return 'Input a valid number';
+                          }
+                        },
+                        keyboardType: TextInputType.text,
 
                         decoration: InputDecoration(
-                            labelText: 'XXXXXXXXXXXXX',
-                          labelStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                            hintText: 'XXXXXXXXXXXXX',
+                          hintStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                          contentPadding: EdgeInsets.all(0.0),
 
-                          suffixIcon: Padding(
+
+
+                          suffixIcon:  Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: SvgPicture.asset("assets/ok.svg",
+                            child: isPhone == true ?  SvgPicture.asset("assets/ok.svg",
                             height:3,
                               width: 3,
-                            ),
+                            ) : null ,
                           )
                         ),
+                        onChanged: (juwel){
+                          setState((){
+                            textLength = text.length;
+                          });
+                        },
+
+
+
                       ),
                     ),
                     // Padding(
@@ -199,7 +283,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
 
 
                 controller: _passwordController,
-                obscureText: true,
+                // obscureText: true,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: UnderlineInputBorder(),
@@ -208,14 +292,30 @@ class _ExerciseOneState extends State<ExerciseOne> {
                     padding: const EdgeInsets.all(8.0),
                     child: SvgPicture.asset("assets/lock.svg"),
                   ),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset("assets/password.svg",
-                        height:5,
-                        width: 5,
-                      ),
-                    )
+                    // suffixIcon: Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: SvgPicture.asset("assets/password.svg",
+                    //     height:5,
+                    //     width: 5,
+                    //   ),
+                    // )
+                  suffixIcon: IconButton(
+                    icon:SvgPicture.asset("assets/password.svg"),
+                    onPressed: (){
+                      setState(() {
+                        _secure = !_secure;
+                      });
+                    },
+
+                  ),
                 ),
+                obscureText: _secure,
+                obscuringCharacter: '*',
+                maxLength: 10,
+                //maxLines: 2,
+                onChanged: (value){
+                  text = value;
+                },
               ),
             ),
             SizedBox(
@@ -228,7 +328,9 @@ class _ExerciseOneState extends State<ExerciseOne> {
                 Container(
                     margin: EdgeInsets.only(left: 20, right: 20),
                     child: Text("Forgot password?",
-                        style: TextStyle(color: Colors.orangeAccent,fontSize: 18)))
+                        style: TextStyle(color: Colors.orangeAccent,fontSize: 18)
+                    )
+                )
               ],
             ),
             SizedBox(
@@ -237,8 +339,13 @@ class _ExerciseOneState extends State<ExerciseOne> {
 
             InkWell(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Page2()));
+                if (_formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+                  );
+                }
+                // Navigator.of(context)
+                //     .push(MaterialPageRoute(builder: (context) => Page2()));
               },
               child: Container(
                 margin: EdgeInsets.only(left: 20, right: 20),
@@ -451,14 +558,4 @@ class _ExerciseOneState extends State<ExerciseOne> {
   }
 }
 
-String validateEmail(String? value) {
-  String pattern =
-      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-      r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-      r"{0,253}[a-zA-Z0-9])?)*$";
-  RegExp regex = RegExp(pattern);
-  if (value == null || value.isEmpty || !regex.hasMatch(value))
-    return '';
-  else
-    return "match";
-}
+
