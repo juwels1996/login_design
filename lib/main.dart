@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kadad_customer_design/emailfield.dart';
 import 'package:kadad_customer_design/login_page.dart';
 
 void main() {
@@ -14,10 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
 
-        primarySwatch: Colors.blue,
-      ),
       home:ExerciseOne(),
     );
   }

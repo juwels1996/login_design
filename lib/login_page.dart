@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:kadad_customer_design/custom_switch.dart';
-import 'package:kadad_customer_design/page2.dart';
 import 'package:rolling_switch/rolling_switch.dart';
 
 class ExerciseOne extends StatefulWidget {
@@ -26,8 +24,16 @@ class _ExerciseOneState extends State<ExerciseOne> {
   //   ];
   //   return menuItems;
   // }
-  List<String>items=['+974','+880'];
-  String ? selectedValue = "+974";
+  var Number = [
+    '+987',
+    '+880',
+    '+550',
+    '+998',
+    '+123',
+  ];
+  String dropdownvalue = '+880';
+
+
   bool switch_bool = false;
   bool abc = false;
   bool _switchvalue = false;
@@ -35,12 +41,13 @@ class _ExerciseOneState extends State<ExerciseOne> {
   String text = '';
   int num = 0;
   int textLength = 0;
+  int  numLength=0;
 
   String aaaa = "";
 
   bool _secure = false;
   bool isEmailValid =  false;
-  bool isPhone=false;
+  bool isPhoneValid=false;
 
 
 
@@ -55,6 +62,25 @@ class _ExerciseOneState extends State<ExerciseOne> {
     //   else
     //     return "match";
     // }
+
+
+
+//   String validateMobile(String ?value) {
+// // Indian Mobile number are of 10 digit only
+//     if (value!.length != 10) {
+//       isPhoneValid=false;
+//       return 'Mobile Number must be of 10 digit';
+//
+//     }
+//     else{
+//       isPhoneValid=true;
+//       return "null";
+//     }
+//
+//
+//
+//
+//   }
 
 
 
@@ -139,7 +165,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
                                   value = _emailController.text;
 
                                 if(value.isNotEmpty) {
-                                   if(value.length > 7 && value.contains('@')) {
+                                   if(value.length > 7 && value.contains('@') && value.contains('.') ) {
                                      isEmailValid = true;
                                      return null;
                                    }
@@ -167,7 +193,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
                               ),
                               onChanged: (value){
                                 setState((){
-                                  textLength = text.length;
+                                  value = _emailController.text;
                                 });
                               },
                             ),
@@ -198,70 +224,86 @@ class _ExerciseOneState extends State<ExerciseOne> {
                       padding: const EdgeInsets.all(16),
                       child: SvgPicture.asset("assets/phone.svg"),
                     ),
-                    Padding(
-                        padding: const EdgeInsets.only(left: 3, right: 12),
-                        child: DropdownButton<String>(
-                          
-                          value: selectedValue,
-                          items: items.map((item) =>DropdownMenuItem(
-                            value: item,
-                              child: Text(item,style: TextStyle(),)
-                          )
-                          ).toList(),
-                          itemHeight: null,
-                          iconSize: 30,
-                          menuMaxHeight: 20,
-                          // iconSize: 20,
-                          style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                          onChanged: (String? value) {
-                            value=value;
-
-                          },
-
-                        ),
-                      ),
                     Container(
-                      width: 300,
-                      child: TextFormField (
-                        validator: (juwel) {
 
-
-                          juwel = _phoneController.text;
-
-                          if(juwel.isNotEmpty) {
-                            if(juwel.length > 10 ) {
-                              isPhone = true;
-                              return null;
-                            }
-                            isPhone = false;
-                            return 'Input a valid number';
-                          }
-                        },
-                        keyboardType: TextInputType.text,
-
-                        decoration: InputDecoration(
-                            hintText: 'XXXXXXXXXXXXX',
-                          hintStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                          contentPadding: EdgeInsets.all(0.0),
-
-
-
-                          suffixIcon:  Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: isPhone == true ?  SvgPicture.asset("assets/ok.svg",
-                            height:3,
-                              width: 3,
-                            ) : null ,
-                          )
+                      height: 70,
+                      width: 90,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: DropdownButton<String>(
+                        value: dropdownvalue,
+                        icon: const Icon(Icons.arrow_drop_down_outlined),
+                        elevation: 2,
+                        underline: Container(
+                          height: 0,
+                          color: Theme.of(context).backgroundColor,
                         ),
-                        onChanged: (juwel){
-                          setState((){
-                            textLength = text.length;
+                        isExpanded: true,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue = newValue!;
                           });
                         },
+                        items: Number.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Container(
+                      width: 300,
+                      child: Form(
+                        key: _formKey,
+                        autovalidateMode: AutovalidateMode.always,
+                        child: TextFormField (
+                          keyboardType: TextInputType.phone,
+                          controller: _phoneController,
+                          validator: (value) {
+                            value = _phoneController.text;
+                            if(value.isNotEmpty) {
+                              if(value.length >=9 && value.length<=10 ) {
+                                print(value.length);
+
+                                isPhoneValid = true;
+                                return null;
+
+                              }
+                              isPhoneValid = false;
+                              return "enter valid nujmbner";
+
+                            }
+                          },
+
+
+                          decoration: InputDecoration(
+                              hintText: 'XXXXXXXXXXXXX',
+                              hintStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
+                              contentPadding: EdgeInsets.all(0.0),
 
 
 
+                              suffixIcon:  Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: isPhoneValid == true ?  SvgPicture.asset("assets/ok.svg",
+                                  height:3,
+                                  width: 3,
+                                ) : null ,
+                              )
+                          ),
+                          onChanged: (value){
+
+                            setState((){
+                              value=_phoneController.text;
+
+                            });
+                          },
+
+
+
+                        ),
                       ),
                     ),
                     // Padding(
@@ -393,8 +435,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
 
             InkWell(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Page2()));
+
               },
               child: Container(
                 margin: EdgeInsets.only(left: 20, right: 20),
@@ -459,8 +500,7 @@ class _ExerciseOneState extends State<ExerciseOne> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Page2()));
+
               },
               child: Container(
                 margin: EdgeInsets.only(left: 20, right: 20),
